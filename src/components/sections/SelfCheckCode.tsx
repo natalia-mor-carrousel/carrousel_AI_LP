@@ -135,6 +135,13 @@ export default function SelfCheckCode() {
     const result = getResult(total);
 
     try {
+      if (!supabase) {
+        // Supabase not configured — show result anyway
+        setResultKey(result);
+        setStep('result');
+        return;
+      }
+
       // Try to insert the lead; if email already exists, fetch the existing row
       const { data: inserted, error: insertError } = await supabase
         .from('leads')
