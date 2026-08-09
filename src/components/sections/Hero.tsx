@@ -108,7 +108,7 @@ export default function Hero() {
               WebkitMaskImage: 'linear-gradient(to bottom, black 55%, transparent 100%)',
             }}>
               <Image
-                src="/images/829b8b582d1236ce95821632cee86988.png"
+                src="/images/natalia-hero.png"
                 alt="Natalia Morozova"
                 width={280}
                 height={380}

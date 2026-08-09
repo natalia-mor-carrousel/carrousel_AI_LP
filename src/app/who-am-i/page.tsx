@@ -219,10 +219,11 @@ export default function WhoAmIPage() {
                 }}
               >
                 <Image
-                  src="/images/9fb33279ef9b9d140ad7c9c416971d78.png"
+                  src="/images/natalia-ymm.png"
                   alt="Natalia Morozova"
                   width={240}
                   height={340}
+                  priority
                   style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '100%', height: 'auto' }}
                 />
               </div>
