@@ -67,11 +67,7 @@ export default function Approach() {
       </motion.div>
 
       <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: 'var(--space-4)',
-        }}
+        style={{ gap: 'var(--space-4)' }}
         className="grid grid-cols-1 md:grid-cols-3"
       >
         {cards.map((card, i) => (

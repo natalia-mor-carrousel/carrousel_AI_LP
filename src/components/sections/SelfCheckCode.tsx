@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../ds/Button';
+import { supabase } from '@/lib/supabase';
 
 const questions = [
   {
@@ -99,6 +100,20 @@ export default function SelfCheckCode() {
     role: '',
   });
   const [resultKey, setResultKey] = useState<keyof typeof results | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [sizeOpen, setSizeOpen] = useState(false);
+  const sizeRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (sizeRef.current && !sizeRef.current.contains(e.target as Node)) {
+        setSizeOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const totalQuestions = questions.length;
   const currentQ = questions[questionIndex];
@@ -111,11 +126,67 @@ export default function SelfCheckCode() {
     setQuestionIndex(questionIndex - 1);
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setSubmitting(true);
+    setSubmitError(null);
+
     const total = answers.reduce((sum, s) => sum + s, 0);
-    setResultKey(getResult(total));
-    setStep('result');
+    const result = getResult(total);
+
+    try {
+      // Try to insert the lead; if email already exists, fetch the existing row
+      const { data: inserted, error: insertError } = await supabase
+        .from('leads')
+        .insert({
+          name: form.name,
+          email: form.email,
+          company: form.company,
+          role: form.role || null,
+          size: form.size || null,
+          industry: form.industry || null,
+        })
+        .select('id')
+        .single();
+
+      let leadId: string;
+
+      if (insertError) {
+        // 23505 = unique_violation (email already exists)
+        if (insertError.code !== '23505') throw insertError;
+
+        const { data: existing, error: fetchError } = await supabase
+          .from('leads')
+          .select('id')
+          .eq('email', form.email)
+          .single();
+
+        if (fetchError) throw fetchError;
+        leadId = existing.id;
+      } else {
+        leadId = inserted.id;
+      }
+
+      // Insert quiz submission linked to lead
+      const { error: submissionError } = await supabase
+        .from('quiz_submissions')
+        .insert({
+          lead_id: leadId,
+          answers,
+          total_score: total,
+          result,
+        });
+
+      if (submissionError) throw submissionError;
+
+      setResultKey(result);
+      setStep('result');
+    } catch (err) {
+      console.error('Submission error:', err);
+      setSubmitError('Something went wrong. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -326,7 +397,7 @@ export default function SelfCheckCode() {
 
                 <div style={{ padding: 'var(--space-5)' }}>
                   <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
+                    <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: 'var(--space-3)' }}>
                       {(
                         [
                           { key: 'name', label: 'Full name', type: 'text', required: true },
@@ -368,10 +439,126 @@ export default function SelfCheckCode() {
                           />
                         </div>
                       ))}
+
+                      {/* Company size — custom dropdown */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                        <span
+                          style={{
+                            font: 'var(--text-eyebrow)',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.04em',
+                            color: 'var(--color-fg-faint)',
+                          }}
+                        >
+                          Company size
+                        </span>
+                        <div ref={sizeRef} style={{ position: 'relative' }}>
+                          <button
+                            type="button"
+                            onClick={() => setSizeOpen(!sizeOpen)}
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              width: '100%',
+                              padding: '10px var(--space-3)',
+                              border: 'var(--border-width) solid var(--color-border-soft)',
+                              borderBottom: sizeOpen ? 'none' : 'var(--border-width) solid var(--color-border-soft)',
+                              borderRadius: sizeOpen ? 'var(--radius-sm) var(--radius-sm) 0 0' : 'var(--radius-sm)',
+                              font: 'var(--text-body-md)',
+                              fontFamily: 'var(--font-body)',
+                              color: form.size ? 'var(--color-fg)' : 'var(--color-fg-faint)',
+                              background: 'var(--color-bg)',
+                              cursor: 'pointer',
+                              textAlign: 'left',
+                            }}
+                          >
+                            <span>{form.size || 'Select…'}</span>
+                            <span style={{ fontSize: 11, color: 'var(--color-fg-faint)', marginLeft: 8 }}>
+                              {sizeOpen ? '▴' : '▾'}
+                            </span>
+                          </button>
+
+                          {sizeOpen && (
+                            <div style={{
+                              position: 'absolute',
+                              top: '100%',
+                              left: 0,
+                              right: 0,
+                              zIndex: 10,
+                              border: 'var(--border-width) solid var(--color-border-soft)',
+                              borderTop: 'none',
+                              borderRadius: '0 0 var(--radius-sm) var(--radius-sm)',
+                              background: 'var(--color-bg)',
+                              overflow: 'hidden',
+                            }}>
+                              {['0 to 20', '20 to 50', '50 to 100', '100 to 500', 'More than 500'].map((option, i, arr) => (
+                                <button
+                                  key={option}
+                                  type="button"
+                                  onClick={() => { setForm({ ...form, size: option }); setSizeOpen(false); }}
+                                  style={{
+                                    display: 'block',
+                                    width: '100%',
+                                    padding: '10px var(--space-3)',
+                                    border: 'none',
+                                    borderBottom: i < arr.length - 1 ? 'var(--border-width) solid var(--color-border-soft)' : 'none',
+                                    background: form.size === option ? 'var(--color-accent-yellow)' : 'transparent',
+                                    font: 'var(--text-body-md)',
+                                    fontFamily: 'var(--font-body)',
+                                    color: 'var(--color-fg)',
+                                    cursor: 'pointer',
+                                    textAlign: 'left',
+                                  }}
+                                >
+                                  {option}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Industry — free text */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                        <label
+                          htmlFor="code-industry"
+                          style={{
+                            font: 'var(--text-eyebrow)',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.04em',
+                            color: 'var(--color-fg-faint)',
+                          }}
+                        >
+                          Industry
+                        </label>
+                        <input
+                          id="code-industry"
+                          type="text"
+                          value={form.industry}
+                          onChange={(e) => setForm({ ...form, industry: e.target.value })}
+                          style={{
+                            padding: '10px var(--space-3)',
+                            border: 'var(--border-width) solid var(--color-border-soft)',
+                            borderRadius: 'var(--radius-sm)',
+                            font: 'var(--text-body-md)',
+                            fontFamily: 'var(--font-body)',
+                            color: 'var(--color-fg)',
+                            background: 'var(--color-bg)',
+                            outline: 'none',
+                            width: '100%',
+                          }}
+                        />
+                      </div>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 'var(--space-2)' }}>
-                      <Button type="submit" variant="primary">
-                        See my result
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8, marginTop: 'var(--space-2)' }}>
+                      {submitError && (
+                        <p style={{ font: 'var(--text-body-sm)', color: 'red', margin: 0 }}>
+                          {submitError}
+                        </p>
+                      )}
+                      <Button type="submit" variant="primary" disabled={submitting}>
+                        {submitting ? 'Submitting…' : 'See my result'}
                       </Button>
                     </div>
                   </form>
@@ -452,6 +639,7 @@ export default function SelfCheckCode() {
                       setAnswers([]);
                       setSelected(null);
                       setResultKey(null);
+                      setSubmitError(null);
                       setForm({ name: '', company: '', email: '', size: '', industry: '', role: '' });
                     }}
                     style={{

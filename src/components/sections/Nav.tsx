@@ -130,6 +130,7 @@ export default function Nav() {
             padding: 'var(--space-4) var(--space-5)',
             display: 'flex',
             flexDirection: 'column',
+            alignItems: 'flex-end',
             gap: 'var(--space-3)',
           }}
         >
@@ -143,6 +144,7 @@ export default function Nav() {
                 fontFamily: 'var(--font-body)',
                 color: 'var(--color-fg)',
                 padding: '6px 0',
+                textAlign: 'right',
               }}
             >
               {link.label}

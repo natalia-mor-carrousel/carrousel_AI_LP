@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Nav from '@/components/sections/Nav';
 import Footer from '@/components/sections/Footer';
 import TopicsColumns from '@/components/sections/TopicsColumns';
+import FinalCta from '@/components/sections/FinalCta';
 import Button from '@/components/ds/Button';
 import { CAL_LINK } from '@/lib/constants';
 
@@ -109,11 +110,12 @@ export default function TheApproachPage() {
 
           <motion.h1
             variants={fadeUp}
+            className="hero-heading"
             style={{
-              font: 'var(--text-hero)',
+              fontWeight: 700,
+              fontFamily: 'var(--font-display)',
               letterSpacing: '-0.02em',
               color: 'var(--color-fg)',
-              lineHeight: 1.08,
             }}
           >
             AI opened the door. You still have to{' '}
@@ -176,21 +178,20 @@ export default function TheApproachPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="grid grid-cols-1 md:grid-cols-[80px_1fr]"
                 style={{
                   border: 'var(--border-width) solid var(--color-fg)',
                   borderRadius: 6,
                   boxShadow: step.shadow,
                   background: 'var(--color-bg)',
                   padding: 'var(--space-6)',
-                  display: 'grid',
-                  gridTemplateColumns: '80px 1fr',
                   gap: 'var(--space-5)',
                   alignItems: 'start',
                 }}
               >
                 <div
                   style={{
-                    font: '700 52px/1 var(--font-display)',
+                    font: '700 44px/1 var(--font-display)',
                     color: step.accent,
                     letterSpacing: '-0.03em',
                     userSelect: 'none',
@@ -339,6 +340,7 @@ export default function TheApproachPage() {
         <TopicsColumns />
       </div>
 
+      <FinalCta />
       <Footer />
     </main>
   );

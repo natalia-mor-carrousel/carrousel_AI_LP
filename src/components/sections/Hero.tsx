@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Tag from '../ds/Tag';
 import Button from '../ds/Button';
@@ -12,20 +13,9 @@ const fadeUp = {
 
 export default function Hero() {
   return (
-    <section
-      style={{
-        maxWidth: 1200,
-        margin: '0 auto',
-        padding: 'var(--space-8) var(--space-5)',
-      }}
-    >
+    <section style={{ maxWidth: 1200, margin: '0 auto', padding: 'var(--space-8) var(--space-5)', overflow: 'hidden' }}>
       <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr auto',
-          gap: 'var(--space-7)',
-          alignItems: 'center',
-        }}
+        style={{ gridTemplateColumns: '1fr auto', gap: 'var(--space-6)', alignItems: 'center' }}
         className="flex flex-col-reverse md:grid"
       >
         {/* Text */}
@@ -42,8 +32,10 @@ export default function Hero() {
           <motion.h1
             variants={fadeUp}
             transition={{ duration: 0.5 }}
+            className="hero-heading"
             style={{
-              font: 'var(--text-hero)',
+              fontWeight: 700,
+              fontFamily: 'var(--font-display)',
               letterSpacing: 'var(--letter-spacing-tight)',
               color: 'var(--color-fg)',
               maxWidth: 640,
@@ -54,25 +46,11 @@ export default function Hero() {
               training
               <svg
                 aria-hidden="true"
-                style={{
-                  position: 'absolute',
-                  bottom: -6,
-                  left: '-2%',
-                  width: '104%',
-                  height: 10,
-                  overflow: 'visible',
-                  pointerEvents: 'none',
-                }}
+                style={{ position: 'absolute', bottom: -6, left: '-2%', width: '104%', height: 10, overflow: 'visible', pointerEvents: 'none' }}
                 viewBox="0 0 100 10"
                 preserveAspectRatio="none"
               >
-                <path
-                  d="M 1,3 C 30,8 70,8 99,3"
-                  stroke="var(--color-accent-yellow)"
-                  strokeWidth="3.2"
-                  fill="none"
-                  strokeLinecap="round"
-                />
+                <path d="M 1,3 C 30,8 70,8 99,3" stroke="var(--color-accent-yellow)" strokeWidth="3.2" fill="none" strokeLinecap="round" />
               </svg>
             </span>
           </motion.h1>
@@ -80,11 +58,7 @@ export default function Hero() {
           <motion.p
             variants={fadeUp}
             transition={{ duration: 0.5 }}
-            style={{
-              font: 'var(--text-body-lg)',
-              color: 'var(--color-fg-muted)',
-              maxWidth: 520,
-            }}
+            style={{ font: 'var(--text-body-lg)', color: 'var(--color-fg-muted)', maxWidth: 520 }}
           >
             I&apos;m Natalia, I built a company alone in six months using AI. Now I sit with your leadership and business teams and do the same thing inside yours.
           </motion.p>
@@ -96,40 +70,52 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* Avatar */}
+        {/* Photo with concentric rings behind */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          style={{ flexShrink: 0 }}
+          style={{ flexShrink: 0, position: 'relative' }}
           className="flex justify-center md:block"
         >
-          <div
-            style={{
-              width: 280,
-              height: 280,
-              borderRadius: '50%',
-              border: 'var(--border-width) solid var(--color-fg)',
-              boxShadow: 'var(--shadow-offset-lg) var(--color-accent-yellow)',
-              overflow: 'hidden',
-              background: 'var(--color-border-soft)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
+          {/* Concentric rings — centered on upper photo, fading outward */}
+          <svg
+            aria-hidden="true"
+            style={{ position: 'absolute', top: -40, left: -80, width: 460, height: 640, pointerEvents: 'none', zIndex: 0 }}
           >
-            <span
-              style={{
-                font: 'var(--text-body-sm)',
-                color: 'var(--color-fg-faint)',
-                fontFamily: 'monospace',
-                fontSize: 11,
-                textAlign: 'center',
-                padding: '0 24px',
-              }}
-            >
-              photo placeholder
-            </span>
+            {[
+              { r: 60,  opacity: 0.18 },
+              { r: 115, opacity: 0.14 },
+              { r: 172, opacity: 0.11 },
+              { r: 232, opacity: 0.08 },
+              { r: 295, opacity: 0.05 },
+              { r: 362, opacity: 0.03 },
+            ].map(({ r, opacity }, i) => (
+              <circle key={i} cx={230} cy={200} r={r} stroke="var(--color-fg)" strokeWidth="1" fill="none" opacity={opacity} />
+            ))}
+          </svg>
+
+          {/* Photo */}
+          <div
+            style={{ position: 'relative', zIndex: 1, filter: 'drop-shadow(0px 6px 24px rgba(55,71,79,0.13))' }}
+            className="w-[220px] md:w-[300px]"
+          >
+            <div style={{
+              position: 'relative',
+              overflow: 'hidden',
+              height: 544,
+              maskImage: 'linear-gradient(to bottom, black 55%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, black 55%, transparent 100%)',
+            }}>
+              <Image
+                src="/images/829b8b582d1236ce95821632cee86988.png"
+                alt="Natalia Morozova"
+                width={280}
+                height={380}
+                priority
+                style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '100%', height: 'auto' }}
+              />
+            </div>
           </div>
         </motion.div>
       </div>

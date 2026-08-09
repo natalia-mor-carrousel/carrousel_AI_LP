@@ -1,8 +1,10 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Nav from '@/components/sections/Nav';
 import Footer from '@/components/sections/Footer';
+import FinalCta from '@/components/sections/FinalCta';
 import Button from '@/components/ds/Button';
 import { CAL_LINK } from '@/lib/constants';
 
@@ -110,84 +112,123 @@ export default function WhoAmIPage() {
     <main style={{ background: 'var(--color-bg)', minHeight: '100vh' }}>
       <Nav />
 
-      {/* Hero */}
+      {/* Hero — with photo */}
       <section style={{ maxWidth: 1200, margin: '0 auto', padding: 'var(--space-8) var(--space-5)' }}>
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
-          style={{ maxWidth: 780 }}
+        <div
+          style={{ gridTemplateColumns: '1fr auto', gap: 'var(--space-6)', alignItems: 'center' }}
+          className="flex flex-col-reverse md:grid"
         >
-          <motion.p
-            variants={fadeUp}
-            style={{
-              font: 'var(--text-eyebrow)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.04em',
-              color: 'var(--color-fg-faint)',
-              marginBottom: 'var(--space-3)',
-            }}
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+            style={{ maxWidth: 780 }}
           >
-            My story
-          </motion.p>
-
-          <motion.h1
-            variants={fadeUp}
-            style={{
-              font: 'var(--text-hero)',
-              letterSpacing: '-0.02em',
-              color: 'var(--color-fg)',
-              marginBottom: 'var(--space-4)',
-            }}
-          >
-            Six months, one person, and a pile of{' '}
-            <span style={{ position: 'relative', display: 'inline-block' }}>
-              AI agents.
-              <svg
-                aria-hidden="true"
-                style={{
-                  position: 'absolute',
-                  bottom: -6,
-                  left: '-2%',
-                  width: '104%',
-                  height: 10,
-                  overflow: 'visible',
-                  pointerEvents: 'none',
-                }}
-                viewBox="0 0 100 10"
-                preserveAspectRatio="none"
-              >
-                <path
-                  d="M 1,3 C 30,8 70,8 99,3"
-                  stroke="var(--color-accent-yellow)"
-                  strokeWidth="3.2"
-                  fill="none"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </span>
-          </motion.h1>
-
-          <motion.p
-            variants={fadeUp}
-            style={{
-              font: 'var(--text-body-lg)',
-              color: 'var(--color-fg-muted)',
-              maxWidth: 620,
-            }}
-          >
-            That&apos;s how{' '}
-            <a
-              href="https://getnoorish.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ borderBottom: '1.5px solid var(--color-accent-yellow)', paddingBottom: 1 }}
+            <motion.p
+              variants={fadeUp}
+              style={{
+                font: 'var(--text-eyebrow)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.04em',
+                color: 'var(--color-fg-faint)',
+                marginBottom: 'var(--space-3)',
+              }}
             >
-              Noorish
-            </a>{' '}
-            happened. I&apos;m Natalia — I built it solo, fast, and had a blast doing it.
-          </motion.p>
-        </motion.div>
+              My story
+            </motion.p>
+
+            <motion.h1
+              variants={fadeUp}
+              className="hero-heading"
+              style={{
+                fontWeight: 700,
+                fontFamily: 'var(--font-display)',
+                letterSpacing: '-0.02em',
+                color: 'var(--color-fg)',
+                marginBottom: 'var(--space-4)',
+              }}
+            >
+              Six months, one person, and a pile of{' '}
+              <span style={{ position: 'relative', display: 'inline-block' }}>
+                AI agents.
+                <svg
+                  aria-hidden="true"
+                  style={{
+                    position: 'absolute',
+                    bottom: -6,
+                    left: '-2%',
+                    width: '104%',
+                    height: 10,
+                    overflow: 'visible',
+                    pointerEvents: 'none',
+                  }}
+                  viewBox="0 0 100 10"
+                  preserveAspectRatio="none"
+                >
+                  <path
+                    d="M 1,3 C 30,8 70,8 99,3"
+                    stroke="var(--color-accent-yellow)"
+                    strokeWidth="3.2"
+                    fill="none"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </span>
+            </motion.h1>
+
+            <motion.p
+              variants={fadeUp}
+              style={{
+                font: 'var(--text-body-lg)',
+                color: 'var(--color-fg-muted)',
+                maxWidth: 620,
+              }}
+            >
+              That&apos;s how{' '}
+              <a
+                href="https://getnoorish.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ borderBottom: '1.5px solid var(--color-accent-yellow)', paddingBottom: 1 }}
+              >
+                Noorish
+              </a>{' '}
+              happened. I&apos;m Natalia — I built it solo, fast, and had a blast doing it.
+            </motion.p>
+          </motion.div>
+
+          {/* Photo — head and shoulders */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            style={{ flexShrink: 0 }}
+            className="flex justify-center md:block"
+          >
+            <div
+              style={{ filter: 'drop-shadow(0px 6px 24px rgba(55,71,79,0.13))' }}
+              className="w-[180px] md:w-[240px]"
+            >
+              <div
+                style={{
+                  position: 'relative',
+                  overflow: 'hidden',
+                  height: 280,
+                  maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+                  WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+                }}
+              >
+                <Image
+                  src="/images/9fb33279ef9b9d140ad7c9c416971d78.png"
+                  alt="Natalia Morozova"
+                  width={240}
+                  height={340}
+                  style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '100%', height: 'auto' }}
+                />
+              </div>
+            </div>
+          </motion.div>
+        </div>
       </section>
 
       {/* What is Noorish */}
@@ -610,6 +651,7 @@ export default function WhoAmIPage() {
         </div>
       </section>
 
+      <FinalCta />
       <Footer />
     </main>
   );

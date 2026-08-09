@@ -82,25 +82,22 @@ export default function TopicsTabs() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
+          className="topics-tabs-card"
           style={{
             border: 'var(--border-width) solid var(--color-fg)',
             borderRadius: 6,
             boxShadow: tier.shadow,
             background: 'var(--color-bg)',
-            display: 'flex',
-            minHeight: 340,
             overflow: 'hidden',
             transition: 'box-shadow 0.25s',
           }}
         >
           {/* Left: tab list */}
           <div
+            className="topics-tabs-sidebar"
             style={{
               display: 'flex',
               flexDirection: 'column',
-              borderRight: 'var(--border-width) solid var(--color-border-soft)',
-              flexShrink: 0,
-              width: 240,
               background: '#f2f2ee',
             }}
           >
@@ -149,7 +146,7 @@ export default function TopicsTabs() {
           </div>
 
           {/* Right: topic list */}
-          <div style={{ flex: 1, padding: 'var(--space-6) var(--space-6)' }}>
+          <div className="topics-tabs-content" style={{ flex: 1 }}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={active}
@@ -159,12 +156,11 @@ export default function TopicsTabs() {
                 transition={{ duration: 0.18 }}
               >
                 <ul
+                  className="grid grid-cols-1 md:grid-cols-2"
                   style={{
                     listStyle: 'none',
                     padding: 0,
                     margin: 0,
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1fr',
                     gap: 'var(--space-3) var(--space-6)',
                   }}
                 >

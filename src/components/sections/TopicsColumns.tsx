@@ -71,22 +71,19 @@ export default function TopicsColumns() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
+          className="topics-columns-card"
           style={{
             border: 'var(--border-width) solid var(--color-fg)',
             borderRadius: 6,
             boxShadow: tier.shadow,
             background: 'var(--color-bg)',
-            display: 'flex',
-            alignItems: 'stretch',
             transition: 'box-shadow 0.25s',
           }}
         >
           {/* Left: title + tabs */}
           <div
+            className="topics-columns-left"
             style={{
-              width: '38%',
-              flexShrink: 0,
-              padding: 'var(--space-7)',
               display: 'flex',
               flexDirection: 'column',
             }}
@@ -115,6 +112,7 @@ export default function TopicsColumns() {
                 <button
                   key={t.label}
                   onClick={() => setActive(i)}
+                  className="topics-tab-btn"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -131,6 +129,7 @@ export default function TopicsColumns() {
                   }}
                 >
                   <span
+                    className="topics-tab-label"
                     style={{
                       font: 'var(--text-h4)',
                       fontFamily: 'var(--font-display)',
@@ -146,9 +145,9 @@ export default function TopicsColumns() {
 
           {/* Right: inner content card */}
           <div
+            className="topics-columns-right"
             style={{
               flex: 1,
-              padding: 'var(--space-6)',
               display: 'flex',
               alignItems: 'stretch',
             }}
@@ -160,13 +159,13 @@ export default function TopicsColumns() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -4 }}
                 transition={{ duration: 0.2 }}
+                className="topics-columns-content"
                 style={{
                   flex: 1,
                   border: 'var(--border-width) solid var(--color-fg)',
                   borderRadius: 6,
                   boxShadow: 'none',
                   background: '#ffffff',
-                  padding: 'var(--space-6)',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: 0,
