@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { CONTACT_EMAIL, LINKEDIN_URL } from '@/lib/constants';
 
 export default function Footer() {
@@ -19,7 +20,7 @@ export default function Footer() {
           gap: 'var(--space-3)',
         }}
       >
-        <img src="/logos/logo.svg" alt="Carrousel.ai" style={{ height: 24, width: 'auto' }} />
+        <Image src="/logos/logo.svg" alt="Carrousel.ai" height={24} width={100} style={{ height: 24, width: 'auto' }} />
 
         <div
           style={{

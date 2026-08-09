@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Button from '../ds/Button';
 import { CAL_LINK } from '@/lib/constants';
 
@@ -36,7 +37,7 @@ export default function Nav() {
       >
         {/* Logo */}
         <a href="/" style={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
-          <img src="/logos/logo.svg" alt="Carrousel.ai" style={{ height: 32, width: 'auto' }} />
+          <Image src="/logos/logo.svg" alt="Carrousel.ai" height={32} width={120} style={{ height: 32, width: 'auto' }} />
         </a>
 
         {/* Desktop links */}
