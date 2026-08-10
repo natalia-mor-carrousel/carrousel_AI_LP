@@ -38,13 +38,12 @@ export default function ApproachAlt2() {
       }}
     >
       <div
+        className="grid-cols-1 md:grid-cols-2"
         style={{
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
           gap: 'var(--space-7)',
           alignItems: 'start',
         }}
-        className="grid-cols-1 md:grid-cols-2"
       >
         {/* Left: sticky heading block */}
         <motion.div
@@ -52,7 +51,7 @@ export default function ApproachAlt2() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          style={{ position: 'sticky', top: 80 }}
+          className="md:sticky md:top-20"
         >
           <p
             style={{

@@ -63,9 +63,9 @@ export default function BottlenecksB() {
 
         {/* Cards grid */}
         <div
+          className="grid-cols-1 md:grid-cols-3"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
             gap: 'var(--space-5)',
             alignItems: 'stretch',
           }}

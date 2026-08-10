@@ -10,25 +10,16 @@ export default function Footer() {
       }}
     >
       <div
+        className="flex flex-col items-center gap-4 md:flex-row md:justify-between"
         style={{
           maxWidth: 1200,
           margin: '0 auto',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: 'var(--space-3)',
         }}
       >
         <Image src="/logos/logo.svg" alt="Carrousel.ai" height={24} width={100} style={{ height: 24, width: 'auto' }} />
 
         <div
-          style={{
-            display: 'flex',
-            gap: 'var(--space-4)',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-          }}
+          className="flex flex-col items-center gap-2 md:flex-row md:gap-6"
         >
           <a
             href={`mailto:${CONTACT_EMAIL}`}

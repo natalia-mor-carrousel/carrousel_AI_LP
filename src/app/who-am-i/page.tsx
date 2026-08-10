@@ -215,8 +215,9 @@ export default function WhoAmIPage() {
                     src="/images/natalia-ymm.png"
                     alt="Natalia Morozova"
                     fill
-                    sizes="(max-width: 767px) 150vw, 240px"
+                    sizes="(max-width: 767px) 100vw, 240px"
                     priority
+                    quality={90}
                     style={{ objectFit: 'cover', objectPosition: '65% 0%' }}
                   />
                 </div>
