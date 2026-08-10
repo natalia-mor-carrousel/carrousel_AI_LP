@@ -113,7 +113,7 @@ export default function WhoAmIPage() {
       <Nav />
 
       {/* Hero — with photo */}
-      <section style={{ maxWidth: 1200, margin: '0 auto', padding: 'var(--space-8) var(--space-5)' }}>
+      <section className="who-am-i-hero-section">
         <div
           style={{ gridTemplateColumns: '1fr auto', gap: 'var(--space-6)', alignItems: 'center' }}
           className="flex flex-col-reverse md:grid"
@@ -203,29 +203,23 @@ export default function WhoAmIPage() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             style={{ flexShrink: 0 }}
-            className="flex justify-center md:block"
+            className="w-full md:w-auto flex justify-center md:block"
           >
             <div
               style={{ filter: 'drop-shadow(0px 6px 24px rgba(55,71,79,0.13))' }}
-              className="w-[180px] md:w-[240px]"
+              className="w-full md:w-[240px]"
             >
-              <div
-                style={{
-                  position: 'relative',
-                  overflow: 'hidden',
-                  height: 280,
-                  maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
-                  WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
-                }}
-              >
-                <Image
-                  src="/images/natalia-ymm.png"
-                  alt="Natalia Morozova"
-                  width={240}
-                  height={340}
-                  priority
-                  style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '100%', height: 'auto' }}
-                />
+              <div className="whoami-photo-container">
+                <div className="whoami-photo-wide">
+                  <Image
+                    src="/images/natalia-ymm.png"
+                    alt="Natalia Morozova"
+                    fill
+                    sizes="(max-width: 767px) 150vw, 240px"
+                    priority
+                    style={{ objectFit: 'cover', objectPosition: '65% 0%' }}
+                  />
+                </div>
               </div>
             </div>
           </motion.div>

@@ -13,7 +13,7 @@ const fadeUp = {
 
 export default function Hero() {
   return (
-    <section style={{ maxWidth: 1200, margin: '0 auto', padding: 'var(--space-8) var(--space-5)', overflow: 'hidden' }}>
+    <section className="hero-section" style={{ maxWidth: 1200, margin: '0 auto', overflow: 'hidden' }}>
       <div
         style={{ gridTemplateColumns: '1fr auto', gap: 'var(--space-6)', alignItems: 'center' }}
         className="flex flex-col-reverse md:grid"
@@ -26,7 +26,10 @@ export default function Hero() {
           style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}
         >
           <motion.div variants={fadeUp} transition={{ duration: 0.5 }}>
-            <Tag accent>AI partner for small and medium teams</Tag>
+            <Tag accent>
+              <span className="md:hidden">AI partner for SME</span>
+              <span className="hidden md:inline">AI partner for small and medium businesses</span>
+            </Tag>
           </motion.div>
 
           <motion.h1
@@ -41,9 +44,9 @@ export default function Hero() {
               maxWidth: 640,
             }}
           >
-            AI transition happens through{' '}
+            Hands-on{' '}
             <span style={{ position: 'relative', display: 'inline-block' }}>
-              training
+              AI training
               <svg
                 aria-hidden="true"
                 style={{ position: 'absolute', bottom: -6, left: '-2%', width: '104%', height: 10, overflow: 'visible', pointerEvents: 'none' }}
@@ -53,6 +56,17 @@ export default function Hero() {
                 <path d="M 1,3 C 30,8 70,8 99,3" stroke="var(--color-accent-yellow)" strokeWidth="3.2" fill="none" strokeLinecap="round" />
               </svg>
             </span>
+            <br />
+            <span className="md:hidden">
+              for leadership
+              <br />
+              and teams
+            </span>
+            <span className="hidden md:inline">
+              for leadership and
+              <br />
+              teams
+            </span>
           </motion.h1>
 
           <motion.p
@@ -60,7 +74,7 @@ export default function Hero() {
             transition={{ duration: 0.5 }}
             style={{ font: 'var(--text-body-lg)', color: 'var(--color-fg-muted)', maxWidth: 520 }}
           >
-            I&apos;m Natalia, I built a company alone in six months using AI. Now I sit with your leadership and business teams and do the same thing inside yours.
+            I&apos;m Natalia. I built a company alone in six months using AI. Now I help you get that same speed — through co-building AI-native processes.
           </motion.p>
 
           <motion.div variants={fadeUp} transition={{ duration: 0.5 }}>
@@ -100,20 +114,14 @@ export default function Hero() {
             style={{ position: 'relative', zIndex: 1, filter: 'drop-shadow(0px 6px 24px rgba(55,71,79,0.13))' }}
             className="w-[220px] md:w-[300px]"
           >
-            <div style={{
-              position: 'relative',
-              overflow: 'hidden',
-              height: 544,
-              maskImage: 'linear-gradient(to bottom, black 55%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to bottom, black 55%, transparent 100%)',
-            }}>
+            <div className="hero-photo-container">
               <Image
                 src="/images/natalia-hero.png"
                 alt="Natalia Morozova"
                 width={280}
                 height={380}
                 priority
-                style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '100%', height: 'auto' }}
+                className="hero-photo-img"
               />
             </div>
           </div>

@@ -245,3 +245,79 @@ img {
     border-right: none;
   }
 }
+
+/* Responsive photo containers — mobile: more zoomed in, cropped from bottom */
+.hero-photo-container {
+  position: relative;
+  overflow: hidden;
+  height: 300px;
+  mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
+}
+@media (min-width: 768px) {
+  .hero-photo-container {
+    height: 544px;
+    mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+  }
+}
+.hero-photo-img {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 160%;
+  height: auto;
+}
+@media (min-width: 768px) {
+  .hero-photo-img {
+    width: 100%;
+  }
+}
+
+.whoami-photo-container {
+  position: relative;
+  overflow: hidden;
+  height: 300px;
+  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+}
+@media (min-width: 768px) {
+  .whoami-photo-container {
+    height: 280px;
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  }
+}
+.whoami-photo-wide {
+  position: absolute;
+  width: 90%;
+  height: 100%;
+  left: 5%;
+}
+@media (min-width: 768px) {
+  .whoami-photo-wide {
+    width: 100%;
+    left: 0;
+  }
+}
+
+.hero-section {
+  padding: var(--space-5) var(--space-5);
+}
+@media (min-width: 768px) {
+  .hero-section {
+    padding: var(--space-8) var(--space-5);
+  }
+}
+
+.who-am-i-hero-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-5);
+}
+@media (min-width: 768px) {
+  .who-am-i-hero-section {
+    padding: var(--space-8) var(--space-5);
+  }
+}

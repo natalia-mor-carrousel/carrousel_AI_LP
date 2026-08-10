@@ -4,8 +4,10 @@ import Hook from '@/components/sections/Hook';
 import Approach from '@/components/sections/Approach';
 import Offers from '@/components/sections/Offers';
 import AiNative from '@/components/sections/AiNative';
+import BottlenecksB from '@/components/sections/BottlenecksB';
 import Bottlenecks from '@/components/sections/Bottlenecks';
 import WhoFor from '@/components/sections/WhoFor';
+import WhoForB from '@/components/sections/WhoForB';
 import SelfCheckCode from '@/components/sections/SelfCheckCode';
 import TopicsColumns from '@/components/sections/TopicsColumns';
 import FinalCta from '@/components/sections/FinalCta';
@@ -17,13 +19,15 @@ export default function Home() {
       <Nav />
       <Hero />
       <Hook />
-      <Bottlenecks />
-      <WhoFor />
+      <BottlenecksB />
+      {/* <WhoFor /> */}
+      <WhoForB />
       <Offers />
       <AiNative />
       <Approach />
       <SelfCheckCode />
       <TopicsColumns />
+      <Bottlenecks />
       <FinalCta />
       <Footer />
     </main>

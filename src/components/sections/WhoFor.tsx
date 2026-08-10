@@ -7,13 +7,11 @@ const cards = [
     kicker: 'founders, co-founders, managers',
     title: 'AI for Leadership',
     body: 'AI adoption only spreads if leaders visibly use it themselves. Upgrade your AI and Claude skills and lead by example.',
-    accent: 'var(--color-accent-yellow)',
   },
   {
     kicker: 'marketing, sales, ops, support, HR',
     title: 'AI for Teams',
     body: 'The best strategy to AI transition is through distributed ownership: each team owns their own AI setup — with a shared layer where what works in one place gets passed to the others. Having one person try to own AI across the whole company "collapses." It doesn\'t scale as one job.',
-    accent: 'var(--color-accent-blue)',
   },
 ];
 
@@ -65,10 +63,10 @@ export default function WhoFor() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
               style={{
-                border: 'var(--border-width) solid var(--color-border)',
-                borderRadius: 'var(--radius-md)',
+                border: 'var(--border-width) solid var(--color-fg)',
+                borderRadius: 6,
                 padding: 'var(--space-6)',
-                boxShadow: card.accent === 'var(--color-accent-yellow)' ? 'var(--shadow-offset-yellow)' : 'var(--shadow-offset-blue)',
+                boxShadow: '4px 4px 0 #D8DBDC',
               }}
             >
               <div
@@ -76,7 +74,7 @@ export default function WhoFor() {
                   width: 30,
                   height: 6,
                   borderRadius: 3,
-                  background: card.accent,
+                  background: '#D8DBDC',
                   marginBottom: 'var(--space-3)',
                 }}
               />
