@@ -46,10 +46,19 @@ export default function BottlenecksB() {
             style={{
               font: 'var(--text-h2)',
               letterSpacing: 'var(--letter-spacing-tight)',
+              marginBottom: 'var(--space-3)',
             }}
           >
             Why AI adoption fails
           </h2>
+          <p
+            style={{
+              font: 'var(--text-body-lg)',
+              color: 'var(--color-fg-muted)',
+            }}
+          >
+            Every team tries something. Most hit the same walls.
+          </p>
         </motion.div>
 
         {/* Cards grid */}

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Nav from '@/components/sections/Nav';
 import Footer from '@/components/sections/Footer';
 import TopicsColumns from '@/components/sections/TopicsColumns';
+import Bottlenecks from '@/components/sections/Bottlenecks';
 import FinalCta from '@/components/sections/FinalCta';
 import Button from '@/components/ds/Button';
 import { CAL_LINK } from '@/lib/constants';
@@ -340,6 +341,7 @@ export default function TheApproachPage() {
         <TopicsColumns />
       </div>
 
+      <Bottlenecks />
       <FinalCta />
       <Footer />
     </main>

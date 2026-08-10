@@ -48,12 +48,14 @@ export default function AiNative() {
           <Button
             variant={answer === 'yes' ? 'primary' : 'secondary'}
             onClick={() => setAnswer('yes')}
+            style={answer !== 'yes' ? { boxShadow: '4px 4px 0 #D8DBDC' } : undefined}
           >
             Yes
           </Button>
           <Button
             variant={answer === 'no' ? 'primary' : 'secondary'}
             onClick={() => setAnswer('no')}
+            style={answer !== 'no' ? { boxShadow: '4px 4px 0 #D8DBDC' } : undefined}
           >
             No
           </Button>
