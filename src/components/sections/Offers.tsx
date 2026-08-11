@@ -4,62 +4,17 @@ import { motion } from 'framer-motion';
 import OfferCard from '../ds/OfferCard';
 import Button from '../ds/Button';
 import { CAL_LINK } from '@/lib/constants';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
-const offers = [
-  {
-    id: 'boost',
-    kicker: 'One-day workshop',
-    name: 'Boost',
-    price: '€3,500',
-    desc: (
-      <>
-        One focused day together, hands-on, on whatever will move the needle most for you or your team.
-        <br /><br />
-        <em style={{ color: 'var(--color-fg-faint)', fontStyle: 'italic' }}>
-          in person or remote · teams up to 8
-        </em>
-      </>
-    ),
-    cta: 'Book an intro call',
-    accent: 'var(--color-accent-yellow)',
-  },
-  {
-    id: 'immersion',
-    kicker: 'Two weeks, two hours a day',
-    name: 'Immersion',
-    price: '€7,000',
-    desc: (
-      <>
-        Two weeks gives you room to breathe — try things between sessions, sleep on it, come back with thoughtful questions. That space means we cover more ground, and it actually sticks.
-        <br /><br />
-        <em style={{ color: 'var(--color-fg-faint)', fontStyle: 'italic' }}>
-          remote · teams up to 10
-        </em>
-      </>
-    ),
-    cta: 'Book an intro call',
-    accent: 'var(--color-accent-blue)',
-  },
-  {
-    id: 'fractional',
-    kicker: 'One day a week, six months',
-    name: 'Fractional AI Partner',
-    price: '€9,000/month',
-    desc: (
-      <>
-        I get to know how your business runs and work alongside your team every week, until using AI becomes how you work. More time, stronger adoption.
-        <br /><br />
-        <em style={{ color: 'var(--color-fg-faint)', fontStyle: 'italic' }}>
-          remote
-        </em>
-      </>
-    ),
-    cta: 'Book an intro call',
-    accent: 'var(--color-accent-yellow)',
-  },
+const offerAccents = [
+  'var(--color-accent-yellow)',
+  'var(--color-accent-blue)',
+  'var(--color-accent-yellow)',
 ];
 
 export default function Offers() {
+  const { t } = useLanguage();
+
   return (
     <section
       style={{
@@ -80,10 +35,10 @@ export default function Offers() {
             marginBottom: 'var(--space-6)',
           }}
         >
-          Choose your format
+          {t.offers.heading}
         </motion.h2>
         <div className="offers-grid">
-          {offers.map((offer, i) => (
+          {t.offers.items.map((offer, i) => (
             <motion.div
               key={offer.id}
               id={offer.id}
@@ -96,12 +51,21 @@ export default function Offers() {
                 kicker={offer.kicker}
                 name={offer.name}
                 price={offer.price}
-                desc={offer.desc}
+                desc={
+                  <>
+                    {offer.desc}
+                    <br /><br />
+                    <em style={{ color: 'var(--color-fg-faint)', fontStyle: 'italic' }}>
+                      {offer.note}
+                    </em>
+                  </>
+                }
                 cta={offer.cta}
                 ctaHref={CAL_LINK}
                 ctaTarget="_blank"
                 learnMoreHref="/the-approach"
-                accent={offer.accent}
+                learnMoreLabel={t.offers.learnMore}
+                accent={offerAccents[i]}
               />
             </motion.div>
           ))}
@@ -130,10 +94,10 @@ export default function Offers() {
               minWidth: 240,
             }}
           >
-            Need something different — a two-day offsite, a different rhythm? Tell me what you&apos;re working with and we&apos;ll figure out a shape that fits.
+            {t.offers.custom.text}
           </p>
           <Button as="a" href={CAL_LINK} variant="secondary" target="_blank" rel="noopener noreferrer">
-            Contact
+            {t.offers.custom.cta}
           </Button>
         </motion.div>
       </div>

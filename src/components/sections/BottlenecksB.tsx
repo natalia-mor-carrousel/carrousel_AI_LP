@@ -1,29 +1,17 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
-const items = [
-  {
-    title: 'Seemingly easy,\nbut not easy',
-    body: 'AI lowered the bar. It didn\'t remove it — you still have to learn this stuff. No shortcut here.',
-    shadow: 'var(--shadow-offset-yellow)',
-    accent: 'var(--color-accent-yellow)',
-  },
-  {
-    title: 'Graveyard\nof agents',
-    body: 'Teams spin up a bunch of agents. Six months later, half are dead — a graveyard nobody visits.',
-    shadow: 'var(--shadow-offset-blue)',
-    accent: 'var(--color-accent-blue)',
-  },
-  {
-    title: 'AI creates new\nbottlenecks',
-    body: 'Spinning up an agent takes five minutes. Keeping it running doesn\'t — teams lose a full workday a week to tool sprawl and upkeep.',
-    shadow: 'var(--shadow-offset-yellow)',
-    accent: 'var(--color-accent-yellow)',
-  },
+const itemStyles = [
+  { shadow: 'var(--shadow-offset-yellow)', accent: 'var(--color-accent-yellow)' },
+  { shadow: 'var(--shadow-offset-blue)',   accent: 'var(--color-accent-blue)'   },
+  { shadow: 'var(--shadow-offset-yellow)', accent: 'var(--color-accent-yellow)' },
 ];
 
 export default function BottlenecksB() {
+  const { t } = useLanguage();
+
   return (
     <section
       style={{
@@ -49,7 +37,7 @@ export default function BottlenecksB() {
               marginBottom: 'var(--space-3)',
             }}
           >
-            Why AI adoption fails
+            {t.bottlenecks.heading}
           </h2>
           <p
             style={{
@@ -57,7 +45,7 @@ export default function BottlenecksB() {
               color: 'var(--color-fg-muted)',
             }}
           >
-            Every team tries something. Most hit the same walls.
+            {t.bottlenecks.subheading}
           </p>
         </motion.div>
 
@@ -70,9 +58,9 @@ export default function BottlenecksB() {
             alignItems: 'stretch',
           }}
         >
-          {items.map((item, i) => (
+          {t.bottlenecks.items.map((item, i) => (
             <motion.div
-              key={item.title}
+              key={i}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -80,7 +68,7 @@ export default function BottlenecksB() {
               style={{
                 border: 'var(--border-width) solid var(--color-fg)',
                 borderRadius: 6,
-                boxShadow: item.shadow,
+                boxShadow: itemStyles[i].shadow,
                 background: 'var(--color-bg)',
                 padding: 'var(--space-6)',
                 display: 'flex',
@@ -110,7 +98,7 @@ export default function BottlenecksB() {
                     width: 8,
                     height: 8,
                     borderRadius: '50%',
-                    background: item.accent,
+                    background: itemStyles[i].accent,
                     flexShrink: 0,
                   }}
                 />
@@ -133,7 +121,7 @@ export default function BottlenecksB() {
               <div
                 style={{
                   height: 2,
-                  background: item.accent,
+                  background: itemStyles[i].accent,
                   marginBottom: 'var(--space-4)',
                   borderRadius: 2,
                 }}

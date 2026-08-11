@@ -1,33 +1,17 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
-const pillars = [
-  {
-    tag: 'Hands-on',
-    title: 'Learning by doing',
-    body: 'We sit down and build it together. You walk away with an upskilled team and an automated process.',
-    accent: 'var(--color-accent-yellow)',
-    shadow: 'var(--shadow-offset-yellow)',
-  },
-  {
-    tag: 'Tailored',
-    title: 'Custom training',
-    body: 'Built around your actual workflows and business processes. Some teams need basics, others want to learn to code. We take it from that level and go deeper.',
-    accent: 'var(--color-accent-blue)',
-    shadow: 'var(--shadow-offset-blue)',
-  },
-  {
-    tag: 'Practical',
-    title: 'Combo of tech and applied AI skills',
-    body: 'The tech side: Claude, GitHub, RAG, self-improving agents. The applied side: Should this be an agent, who\'s responsible if it breaks, is it actually saving time?',
-    accent: 'var(--color-accent-yellow)',
-    shadow: 'var(--shadow-offset-yellow)',
-  },
+const pillarStyles = [
+  { accent: 'var(--color-accent-yellow)', shadow: 'var(--shadow-offset-yellow)' },
+  { accent: 'var(--color-accent-blue)',   shadow: 'var(--shadow-offset-blue)'   },
+  { accent: 'var(--color-accent-yellow)', shadow: 'var(--shadow-offset-yellow)' },
 ];
 
-// Layout: large asymmetric — heading takes left half, cards fill right column stacked
 export default function ApproachAlt2() {
+  const { t } = useLanguage();
+
   return (
     <section
       style={{
@@ -62,7 +46,7 @@ export default function ApproachAlt2() {
               marginBottom: 'var(--space-3)',
             }}
           >
-            The training experience
+            {t.approach.eyebrow}
           </p>
           <h2
             style={{
@@ -71,7 +55,7 @@ export default function ApproachAlt2() {
               marginBottom: 'var(--space-4)',
             }}
           >
-            AI didn&apos;t remove the technical barrier. It lowered it enough for you to climb over.
+            {t.approach.heading}
           </h2>
           <p
             style={{
@@ -79,15 +63,15 @@ export default function ApproachAlt2() {
               color: 'var(--color-fg-muted)',
             }}
           >
-            Every training is built around what your team actually does — not a generic AI crash course.
+            {t.approach.subheading}
           </p>
         </motion.div>
 
         {/* Right: stacked cards */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-          {pillars.map((pillar, i) => (
+          {t.approach.pillars.map((pillar, i) => (
             <motion.div
-              key={pillar.title}
+              key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -95,7 +79,7 @@ export default function ApproachAlt2() {
               style={{
                 border: 'var(--border-width) solid var(--color-fg)',
                 borderRadius: '6px',
-                boxShadow: pillar.shadow,
+                boxShadow: pillarStyles[i].shadow,
                 background: 'var(--color-bg)',
                 padding: 'var(--space-5)',
               }}
@@ -109,7 +93,7 @@ export default function ApproachAlt2() {
                   letterSpacing: '0.04em',
                   padding: '4px 10px',
                   borderRadius: 'var(--radius-pill)',
-                  background: pillar.accent,
+                  background: pillarStyles[i].accent,
                   color: 'var(--color-fg)',
                   marginBottom: 'var(--space-3)',
                 }}

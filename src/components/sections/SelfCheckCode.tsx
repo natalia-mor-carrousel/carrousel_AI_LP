@@ -4,71 +4,9 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../ds/Button';
 import { supabase } from '@/lib/supabase';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
-const questions = [
-  {
-    q: 'Does your team use ChatGPT or Claude?',
-    options: [
-      { label: 'Not really.', score: 0 },
-      { label: 'Yes, a few people use it here and there.', score: 1 },
-      { label: "It's part of how most teams work day to day.", score: 2 },
-    ],
-  },
-  {
-    q: 'Have you set up any AI agents for tasks such as content creation, cold outreach, knowledge management — or similar?',
-    options: [
-      { label: "No, we haven't set anything like that up.", score: 0 },
-      { label: "We've tried one or two, but they're not really running on their own — someone still babysits them.", score: 1 },
-      { label: 'Yes, a few agents handle real tasks with light supervision.', score: 2 },
-      { label: 'Yes, several agents run end-to-end and we barely touch them.', score: 3 },
-    ],
-  },
-  {
-    q: 'Are your agents plugged into your company knowledge base (documentation and data)?',
-    options: [
-      { label: "We don't have a consolidated knowledge base.", score: 0 },
-      { label: "We have one, but our AI tools aren't connected to it.", score: 1 },
-      { label: 'Yes, our agents pull directly from it.', score: 2 },
-      { label: "We've set up RAG.", score: 3 },
-    ],
-  },
-  {
-    q: 'When AI gets something wrong, what happens?',
-    options: [
-      { label: 'Someone catches it eventually, ad hoc.', score: 0 },
-      { label: "A human checks every single output — that's the review step.", score: 1 },
-      { label: 'The system flags what looks off. People only step in for the real judgment calls.', score: 2 },
-    ],
-  },
-  {
-    q: 'Who owns AI at your company?',
-    options: [
-      { label: "No one, really — people just use whatever tools they like.", score: 0 },
-      { label: "A few teams have their own setups, but they don't talk to each other.", score: 1 },
-      { label: 'Each team owns their piece, with shared guidelines and documentation.', score: 2 },
-      { label: 'A dedicated role.', score: 3 },
-    ],
-  },
-];
-
-const results = {
-  assisted: {
-    label: 'Assisted',
-    description: 'People use AI tools here and there, one-off, disconnected from the last time. Nothing carries over.',
-  },
-  integrated: {
-    label: 'Integrated',
-    description: "AI shows up at several points in a workflow, but someone's still manually running each step and passing the work between them.",
-  },
-  native: {
-    label: 'Native',
-    description: "Steps hand off to each other on their own. People design the system and step in where judgment is needed — they're not operating every step by hand.",
-  },
-};
-
-const deeperDig =
-  "Most companies think they're further along than they are. 90% of employees already use AI tools on their own, unofficially — and it still doesn't add up to real value. Even fully-resourced AI projects fail most of the time: 95% of enterprise AI pilots don't deliver a return, not because the AI doesn't work, but because it gets bolted onto an old way of working. Outside help roughly doubles the success rate of internal-only attempts — knowing your own job well isn't the same as knowing how to restructure it.";
-
+type ResultKey = 'assisted' | 'integrated' | 'native';
 type Step = 'quiz' | 'form' | 'result';
 
 interface FormData {
@@ -80,13 +18,16 @@ interface FormData {
   role: string;
 }
 
-function getResult(score: number): keyof typeof results {
+function getResult(score: number): ResultKey {
   if (score <= 4) return 'assisted';
   if (score <= 9) return 'integrated';
   return 'native';
 }
 
 export default function SelfCheckCode() {
+  const { t } = useLanguage();
+  const quiz = t.quiz;
+
   const [step, setStep] = useState<Step>('quiz');
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
@@ -99,7 +40,7 @@ export default function SelfCheckCode() {
     industry: '',
     role: '',
   });
-  const [resultKey, setResultKey] = useState<keyof typeof results | null>(null);
+  const [resultKey, setResultKey] = useState<ResultKey | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [sizeOpen, setSizeOpen] = useState(false);
@@ -115,8 +56,8 @@ export default function SelfCheckCode() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const totalQuestions = questions.length;
-  const currentQ = questions[questionIndex];
+  const totalQuestions = quiz.questions.length;
+  const currentQ = quiz.questions[questionIndex];
 
   function handleBack() {
     if (questionIndex === 0) return;
@@ -136,13 +77,11 @@ export default function SelfCheckCode() {
 
     try {
       if (!supabase) {
-        // Supabase not configured — show result anyway
         setResultKey(result);
         setStep('result');
         return;
       }
 
-      // Try to insert the lead; if email already exists, fetch the existing row
       const { data: inserted, error: insertError } = await supabase
         .from('leads')
         .insert({
@@ -159,7 +98,6 @@ export default function SelfCheckCode() {
       let leadId: string;
 
       if (insertError) {
-        // 23505 = unique_violation (email already exists)
         if (insertError.code !== '23505') throw insertError;
 
         const { data: existing, error: fetchError } = await supabase
@@ -174,7 +112,6 @@ export default function SelfCheckCode() {
         leadId = inserted.id;
       }
 
-      // Insert quiz submission linked to lead
       const { error: submissionError } = await supabase
         .from('quiz_submissions')
         .insert({
@@ -190,7 +127,7 @@ export default function SelfCheckCode() {
       setStep('result');
     } catch (err) {
       console.error('Submission error:', err);
-      setSubmitError('Something went wrong. Please try again.');
+      setSubmitError(quiz.form.error);
     } finally {
       setSubmitting(false);
     }
@@ -229,7 +166,7 @@ export default function SelfCheckCode() {
                 marginBottom: 'var(--space-2)',
               }}
             >
-              Is your business AI-native, or just AI-assisted?
+              {quiz.heading}
             </h2>
             <p
               style={{
@@ -237,7 +174,7 @@ export default function SelfCheckCode() {
                 color: 'var(--color-fg-muted)',
               }}
             >
-              Five questions and you get a clear picture of where your company stands.
+              {quiz.subheading}
             </p>
           </div>
 
@@ -269,7 +206,7 @@ export default function SelfCheckCode() {
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      Question {questionIndex + 1} of {totalQuestions}
+                      {quiz.questionOf(questionIndex + 1, totalQuestions)}
                     </span>
                     <div
                       style={{
@@ -369,7 +306,7 @@ export default function SelfCheckCode() {
                         gap: 6,
                       }}
                     >
-                      ← Back
+                      {quiz.back}
                     </button>
                   )}
                 </div>
@@ -398,7 +335,7 @@ export default function SelfCheckCode() {
                       letterSpacing: '0.04em',
                     }}
                   >
-                    Almost there — where should we send your result?
+                    {quiz.almostThere}
                   </span>
                 </div>
 
@@ -407,10 +344,10 @@ export default function SelfCheckCode() {
                     <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: 'var(--space-3)' }}>
                       {(
                         [
-                          { key: 'name', label: 'Full name', type: 'text', required: true },
-                          { key: 'company', label: 'Company name', type: 'text', required: true },
-                          { key: 'email', label: 'Email', type: 'email', required: true },
-                          { key: 'role', label: 'Your role', type: 'text', required: false },
+                          { key: 'name', label: quiz.form.name, type: 'text', required: true },
+                          { key: 'company', label: quiz.form.company, type: 'text', required: true },
+                          { key: 'email', label: quiz.form.email, type: 'email', required: true },
+                          { key: 'role', label: quiz.form.role, type: 'text', required: false },
                         ] as const
                       ).map((field) => (
                         <div key={field.key} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
@@ -457,7 +394,7 @@ export default function SelfCheckCode() {
                             color: 'var(--color-fg-faint)',
                           }}
                         >
-                          Company size
+                          {quiz.form.size}
                         </span>
                         <div ref={sizeRef} style={{ position: 'relative' }}>
                           <button
@@ -480,7 +417,7 @@ export default function SelfCheckCode() {
                               textAlign: 'left',
                             }}
                           >
-                            <span>{form.size || 'Select…'}</span>
+                            <span>{form.size || quiz.form.sizePlaceholder}</span>
                             <span style={{ fontSize: 11, color: 'var(--color-fg-faint)', marginLeft: 8 }}>
                               {sizeOpen ? '▴' : '▾'}
                             </span>
@@ -499,7 +436,7 @@ export default function SelfCheckCode() {
                               background: 'var(--color-bg)',
                               overflow: 'hidden',
                             }}>
-                              {['0 to 20', '20 to 50', '50 to 100', '100 to 500', 'More than 500'].map((option, i, arr) => (
+                              {quiz.form.sizeOptions.map((option, i, arr) => (
                                 <button
                                   key={option}
                                   type="button"
@@ -537,7 +474,7 @@ export default function SelfCheckCode() {
                             color: 'var(--color-fg-faint)',
                           }}
                         >
-                          Industry
+                          {quiz.form.industry}
                         </label>
                         <input
                           id="code-industry"
@@ -565,7 +502,7 @@ export default function SelfCheckCode() {
                         </p>
                       )}
                       <Button type="submit" variant="primary" disabled={submitting}>
-                        {submitting ? 'Submitting…' : 'See my result'}
+                        {submitting ? quiz.form.submitting : quiz.form.submit}
                       </Button>
                     </div>
                   </form>
@@ -602,10 +539,10 @@ export default function SelfCheckCode() {
                       fontWeight: 600,
                     }}
                   >
-                    {results[resultKey].label}
+                    {quiz.results[resultKey].label}
                   </span>
                   <span style={{ font: 'var(--text-eyebrow)', color: 'var(--color-fg-faint)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                    Your result
+                    {quiz.yourResult}
                   </span>
                 </div>
 
@@ -617,7 +554,7 @@ export default function SelfCheckCode() {
                       marginBottom: 'var(--space-4)',
                     }}
                   >
-                    {results[resultKey].description}
+                    {quiz.results[resultKey].description}
                   </p>
 
                   <div
@@ -635,7 +572,7 @@ export default function SelfCheckCode() {
                         lineHeight: 1.7,
                       }}
                     >
-                      {deeperDig}
+                      {quiz.deeperDig}
                     </p>
                   </div>
 
@@ -660,7 +597,7 @@ export default function SelfCheckCode() {
                       fontFamily: 'var(--font-body)',
                     }}
                   >
-                    Start over
+                    {quiz.startOver}
                   </button>
                 </div>
               </motion.div>

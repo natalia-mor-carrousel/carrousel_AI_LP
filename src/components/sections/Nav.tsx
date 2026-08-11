@@ -4,14 +4,11 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Button from '../ds/Button';
 import { CAL_LINK } from '@/lib/constants';
-
-const navLinks = [
-  { label: 'The approach', href: '/the-approach' },
-  { label: 'Who Am I', href: '/who-am-i' },
-];
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { lang, setLang, t } = useLanguage();
 
   return (
     <nav
@@ -45,9 +42,9 @@ export default function Nav() {
           className="hidden md:flex"
           style={{ gap: 'var(--space-4)', alignItems: 'center', marginLeft: 'auto' }}
         >
-          {navLinks.map((link) => (
+          {t.nav.links.map((link) => (
             <a
-              key={link.label}
+              key={link.href}
               href={link.href}
               style={{
                 font: 'var(--text-body-sm)',
@@ -61,8 +58,26 @@ export default function Nav() {
           ))}
         </div>
 
-        {/* CTA */}
-        <div className="hidden md:block" style={{ flexShrink: 0 }}>
+        {/* Language toggle + CTA */}
+        <div className="hidden md:flex" style={{ flexShrink: 0, alignItems: 'center', gap: 'var(--space-3)' }}>
+          <button
+            onClick={() => setLang(lang === 'en' ? 'fr' : 'en')}
+            style={{
+              background: 'none',
+              border: 'var(--border-width) solid var(--color-border-soft)',
+              borderRadius: 'var(--radius-pill)',
+              padding: '5px 12px',
+              cursor: 'pointer',
+              font: 'var(--text-eyebrow)',
+              fontFamily: 'var(--font-body)',
+              color: 'var(--color-fg-muted)',
+              letterSpacing: '0.04em',
+              transition: 'border-color 0.15s, color 0.15s',
+            }}
+            aria-label={lang === 'en' ? 'Passer en français' : 'Switch to English'}
+          >
+            {lang === 'en' ? 'FR' : 'EN'}
+          </button>
           <Button
             as="a"
             href={CAL_LINK}
@@ -71,7 +86,7 @@ export default function Nav() {
             rel="noopener noreferrer"
             style={{ fontSize: 14, padding: '10px 20px' }}
           >
-            Book an intro
+            {t.nav.cta}
           </Button>
         </div>
 
@@ -135,9 +150,9 @@ export default function Nav() {
             gap: 'var(--space-3)',
           }}
         >
-          {navLinks.map((link) => (
+          {t.nav.links.map((link) => (
             <a
-              key={link.label}
+              key={link.href}
               href={link.href}
               onClick={() => setMenuOpen(false)}
               style={{
@@ -151,8 +166,24 @@ export default function Nav() {
               {link.label}
             </a>
           ))}
+          <button
+            onClick={() => setLang(lang === 'en' ? 'fr' : 'en')}
+            style={{
+              background: 'none',
+              border: 'var(--border-width) solid var(--color-border-soft)',
+              borderRadius: 'var(--radius-pill)',
+              padding: '5px 12px',
+              cursor: 'pointer',
+              font: 'var(--text-eyebrow)',
+              fontFamily: 'var(--font-body)',
+              color: 'var(--color-fg-muted)',
+              letterSpacing: '0.04em',
+            }}
+          >
+            {lang === 'en' ? 'FR' : 'EN'}
+          </button>
           <Button as="a" href={CAL_LINK} variant="primary" target="_blank" rel="noopener noreferrer" style={{ marginTop: 8 }}>
-            Book an intro
+            {t.nav.cta}
           </Button>
         </div>
       )}

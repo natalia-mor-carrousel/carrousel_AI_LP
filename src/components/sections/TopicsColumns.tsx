@@ -2,61 +2,20 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
-const tiers = [
-  {
-    label: 'Foundation',
-    description: 'Getting started with AI tools and agent thinking',
-    topics: [
-      'Intro to Claude Cowork',
-      'Identifying repetitive tasks and setting priorities',
-      'Which processes to convert to an AI agent',
-      'Autonomous agent, agent with subagent, human in the loop — what\'s best?',
-      'Connecting tools',
-      'Agents, subagents, skills, commands, hooks',
-      'Token management',
-    ],
-    accent: 'var(--color-accent-yellow)',
-    shadow: 'var(--shadow-offset-yellow)',
-    shadowSm: 'var(--shadow-offset-yellow-sm)',
-  },
-  {
-    label: 'Intermediate',
-    description: 'Building shared systems and managing knowledge',
-    topics: [
-      'Building a knowledge base: shared team workspace and conventions',
-      'Knowledge base, memory, RAG',
-      'CLAUDE.md file',
-      'Context management',
-      'Governance and responsibility',
-      'Difference between Claude Cowork and Claude Code',
-      'Plan and execute modes',
-    ],
-    accent: 'var(--color-accent-blue)',
-    shadow: 'var(--shadow-offset-blue)',
-    shadowSm: 'var(--shadow-offset-blue-sm)',
-  },
-  {
-    label: 'Advanced',
-    description: 'Scaling robust agent systems across your organisation',
-    topics: [
-      'How to build a robust system of agents from scratch',
-      'Shared guardrails and policies across organisation',
-      'Maintenance',
-      'Self-testing and self-improving agents',
-      'Metrics — does AI actually help? — visual dashboard',
-      'Connecting your workspace to GitHub',
-      'Backend of the project',
-    ],
-    accent: 'var(--color-accent-yellow)',
-    shadow: 'var(--shadow-offset-yellow)',
-    shadowSm: 'var(--shadow-offset-yellow-sm)',
-  },
+const tierStyles = [
+  { accent: 'var(--color-accent-yellow)', shadow: 'var(--shadow-offset-yellow)', shadowSm: 'var(--shadow-offset-yellow-sm)' },
+  { accent: 'var(--color-accent-blue)',   shadow: 'var(--shadow-offset-blue)',   shadowSm: 'var(--shadow-offset-blue-sm)'   },
+  { accent: 'var(--color-accent-yellow)', shadow: 'var(--shadow-offset-yellow)', shadowSm: 'var(--shadow-offset-yellow-sm)' },
 ];
 
 export default function TopicsColumns() {
   const [active, setActive] = useState(0);
+  const { t } = useLanguage();
+  const tiers = t.topics.tiers;
   const tier = tiers[active];
+  const style = tierStyles[active];
 
   return (
     <section
@@ -75,7 +34,7 @@ export default function TopicsColumns() {
           style={{
             border: 'var(--border-width) solid var(--color-fg)',
             borderRadius: 6,
-            boxShadow: tier.shadow,
+            boxShadow: style.shadow,
             background: 'var(--color-bg)',
             transition: 'box-shadow 0.25s',
           }}
@@ -95,7 +54,7 @@ export default function TopicsColumns() {
                 marginBottom: 'var(--space-3)',
               }}
             >
-              Examples of what we can work on
+              {t.topics.heading}
             </h2>
             <p
               style={{
@@ -104,13 +63,13 @@ export default function TopicsColumns() {
                 marginBottom: 'var(--space-6)',
               }}
             >
-              Sessions are tailored to where your team is. Pick the level that fits.
+              {t.topics.subheading}
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-              {tiers.map((t, i) => (
+              {tiers.map((tier, i) => (
                 <button
-                  key={t.label}
+                  key={i}
                   onClick={() => setActive(i)}
                   className="topics-tab-btn"
                   style={{
@@ -121,8 +80,8 @@ export default function TopicsColumns() {
                     border: 'var(--border-width) solid',
                     borderColor: active === i ? 'var(--color-fg)' : 'var(--color-border-soft)',
                     borderRadius: 'var(--radius-pill)',
-                    background: active === i ? t.accent : 'transparent',
-                    boxShadow: active === i ? t.shadowSm : 'none',
+                    background: active === i ? tierStyles[i].accent : 'transparent',
+                    boxShadow: active === i ? tierStyles[i].shadowSm : 'none',
                     cursor: 'pointer',
                     textAlign: 'left',
                     transition: 'background 0.18s, border-color 0.18s, box-shadow 0.18s',
@@ -136,7 +95,7 @@ export default function TopicsColumns() {
                       color: 'var(--color-fg)',
                     }}
                   >
-                    {t.label}
+                    {tier.label}
                   </span>
                 </button>
               ))}
@@ -180,9 +139,9 @@ export default function TopicsColumns() {
                     flexDirection: 'column',
                   }}
                 >
-                  {tier.topics.map((topic) => (
+                  {tier.topics.map((topic, j) => (
                     <li
-                      key={topic}
+                      key={j}
                       style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -197,7 +156,7 @@ export default function TopicsColumns() {
                           width: 7,
                           height: 7,
                           borderRadius: '50%',
-                          background: tier.accent,
+                          background: style.accent,
                           flexShrink: 0,
                         }}
                       />
@@ -215,7 +174,7 @@ export default function TopicsColumns() {
                     borderTop: 'var(--border-width) solid var(--color-border-soft)',
                   }}
                 >
-                  These are examples only — the actual concepts will be shaped together at the intro call.
+                  {t.topics.footer}
                 </p>
               </motion.div>
             </AnimatePresence>

@@ -8,63 +8,17 @@ import Bottlenecks from '@/components/sections/Bottlenecks';
 import FinalCta from '@/components/sections/FinalCta';
 import Button from '@/components/ds/Button';
 import { CAL_LINK } from '@/lib/constants';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 16 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
-type Step = {
-  number: string;
-  title: string;
-  accent: string;
-  shadow: string;
-  subtitle: string | null;
-  bullets: string[];
-};
-
-const steps: Step[] = [
-  {
-    number: '01',
-    title: 'Intro call',
-    accent: 'var(--color-accent-yellow)',
-    shadow: 'var(--shadow-offset-yellow)',
-    subtitle: null,
-    bullets: [
-      'Goal: customize the training to you',
-      'Where you are now and how you currently use AI',
-      'Who it is for — team or leadership, what level, their processes and bottlenecks',
-      'We define the learning goals together',
-      'You get the program outline right after',
-    ],
-  },
-  {
-    number: '02',
-    title: 'Training',
-    accent: 'var(--color-accent-blue)',
-    shadow: 'var(--shadow-offset-blue)',
-    subtitle: null,
-    bullets: [
-      'I get to know your team and how they work, where they lose time, where the bottlenecks are',
-      'We fill the gaps with the concepts they are missing',
-      '__LINK__',
-    ],
-  },
-  {
-    number: '03',
-    title: 'What you walk away with',
-    accent: 'var(--color-accent-yellow)',
-    shadow: 'var(--shadow-offset-yellow)',
-    subtitle: 'Depending on the training goals',
-    bullets: [
-      'A Claude Cowork workspace and knowledge base',
-      'A set of skills and scheduled tasks',
-      'A governance map — who is responsible for what',
-      'Shared guardrails and policies',
-      'A metrics dashboard',
-      'An action plan with next steps (key processes to automate, key decisions to make)',
-    ],
-  },
+const stepStyles = [
+  { accent: 'var(--color-accent-yellow)', shadow: 'var(--shadow-offset-yellow)' },
+  { accent: 'var(--color-accent-blue)',   shadow: 'var(--shadow-offset-blue)'   },
+  { accent: 'var(--color-accent-yellow)', shadow: 'var(--shadow-offset-yellow)' },
 ];
 
 function BulletDot({ accent }: { accent: string }) {
@@ -84,6 +38,9 @@ function BulletDot({ accent }: { accent: string }) {
 }
 
 export default function TheApproachPage() {
+  const { t } = useLanguage();
+  const ta = t.theApproach;
+
   return (
     <main style={{ background: 'var(--color-bg)', minHeight: '100vh' }}>
       <Nav />
@@ -106,7 +63,7 @@ export default function TheApproachPage() {
               marginBottom: 'var(--space-3)',
             }}
           >
-            The approach
+            {ta.eyebrow}
           </motion.p>
 
           <motion.h1
@@ -119,9 +76,9 @@ export default function TheApproachPage() {
               color: 'var(--color-fg)',
             }}
           >
-            AI opened the door. You still have to{' '}
+            {ta.heading.before}
             <span style={{ position: 'relative', display: 'inline-block' }}>
-              walk through.
+              {ta.heading.underlined}
               <svg
                 aria-hidden="true"
                 style={{
@@ -168,11 +125,11 @@ export default function TheApproachPage() {
               marginBottom: 'var(--space-6)',
             }}
           >
-            How it works
+            {ta.howItWorksHeading}
           </motion.h2>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-            {steps.map((step, i) => (
+            {ta.steps.map((step, i) => (
               <motion.div
                 key={step.number}
                 initial={{ opacity: 0, y: 20 }}
@@ -183,7 +140,7 @@ export default function TheApproachPage() {
                 style={{
                   border: 'var(--border-width) solid var(--color-fg)',
                   borderRadius: 6,
-                  boxShadow: step.shadow,
+                  boxShadow: stepStyles[i].shadow,
                   background: 'var(--color-bg)',
                   padding: 'var(--space-6)',
                   gap: 'var(--space-5)',
@@ -193,7 +150,7 @@ export default function TheApproachPage() {
                 <div
                   style={{
                     font: '700 44px/1 var(--font-display)',
-                    color: step.accent,
+                    color: stepStyles[i].accent,
                     letterSpacing: '-0.03em',
                     userSelect: 'none',
                   }}
@@ -237,26 +194,35 @@ export default function TheApproachPage() {
                           color: 'var(--color-fg-muted)',
                         }}
                       >
-                        <BulletDot accent={step.accent} />
-                        {bullet === '__LINK__' ? (
-                          <span>
-                            We build what fits your goals: a knowledge base, an agent, governance guardrails, etc.{' '}
-                            <a
-                              href="#examples"
-                              style={{
-                                color: 'var(--color-fg-muted)',
-                                borderBottom: '1.5px solid var(--color-accent-blue)',
-                                paddingBottom: 1,
-                              }}
-                            >
-                              See examples below
-                            </a>
-                          </span>
-                        ) : (
-                          bullet
-                        )}
+                        <BulletDot accent={stepStyles[i].accent} />
+                        {bullet}
                       </li>
                     ))}
+                    {step.linkBullet && (
+                      <li
+                        style={{
+                          display: 'flex',
+                          gap: 12,
+                          font: 'var(--text-body-md)',
+                          color: 'var(--color-fg-muted)',
+                        }}
+                      >
+                        <BulletDot accent={stepStyles[i].accent} />
+                        <span>
+                          {step.linkBullet.text}{' '}
+                          <a
+                            href="#examples"
+                            style={{
+                              color: 'var(--color-fg-muted)',
+                              borderBottom: '1.5px solid var(--color-accent-blue)',
+                              paddingBottom: 1,
+                            }}
+                          >
+                            {step.linkBullet.linkText}
+                          </a>
+                        </span>
+                      </li>
+                    )}
                   </ul>
                 </div>
               </motion.div>
@@ -295,7 +261,7 @@ export default function TheApproachPage() {
                   marginBottom: 'var(--space-2)',
                 }}
               >
-                One day a week, six months
+                {ta.fractional.eyebrow}
               </p>
               <h2
                 style={{
@@ -304,7 +270,7 @@ export default function TheApproachPage() {
                   marginBottom: 'var(--space-2)',
                 }}
               >
-                Fractional AI Partner
+                {ta.fractional.heading}
               </h2>
             </div>
 
@@ -316,7 +282,7 @@ export default function TheApproachPage() {
                   marginBottom: 'var(--space-6)',
                 }}
               >
-                Weekly calls with your team, going deep into how they actually work. We restructure workflows end to end, install and connect tools. Building and learning happen at the same time — key concepts get covered as we go, so the knowledge stays with the team. You end up as an AI-native company.
+                {ta.fractional.body}
               </p>
 
               <div>
@@ -328,7 +294,7 @@ export default function TheApproachPage() {
                   rel="noopener noreferrer"
                   style={{ fontSize: 14, padding: '10px 20px' }}
                 >
-                  Book an intro call
+                  {ta.fractional.cta}
                 </Button>
               </div>
             </div>

@@ -3,8 +3,11 @@
 import { motion } from 'framer-motion';
 import Button from '../ds/Button';
 import { CAL_LINK } from '@/lib/constants';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export default function FinalCta() {
+  const { t } = useLanguage();
+
   return (
     <section
       style={{
@@ -34,19 +37,19 @@ export default function FinalCta() {
             letterSpacing: 'var(--letter-spacing-tight)',
           }}
         >
-          Tell me where you are at
+          {t.finalCta.heading}
         </h2>
         <p
           style={{
             font: 'var(--text-body-lg)',
             color: 'var(--color-surface-dark-fg)',
-          opacity: 0.7,
+            opacity: 0.7,
           }}
         >
-          A brief call to see if we are a fit, discuss your needs, and set up a plan.
+          {t.finalCta.subheading}
         </p>
         <Button as="a" href={CAL_LINK} variant="inverted" target="_blank" rel="noopener noreferrer">
-          Book an intro
+          {t.finalCta.cta}
         </Button>
       </motion.div>
     </section>

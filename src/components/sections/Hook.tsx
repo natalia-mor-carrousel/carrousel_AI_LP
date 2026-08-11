@@ -1,8 +1,11 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export default function Hook() {
+  const { t } = useLanguage();
+
   return (
     <section
       style={{
@@ -27,11 +30,11 @@ export default function Hook() {
             color: 'var(--color-surface-dark-fg)',
           }}
         >
-          Only 10% of AI&apos;s value comes from the algorithms, 20% from the tech implementation, and{' '}
+          {t.hook.prefix}{' '}
           <span style={{ color: 'var(--color-accent-yellow)' }}>
-            70% from rethinking the people side
+            {t.hook.highlight}
           </span>{' '}
-          — that is, training
+          {t.hook.suffix}
         </p>
       </motion.div>
     </section>

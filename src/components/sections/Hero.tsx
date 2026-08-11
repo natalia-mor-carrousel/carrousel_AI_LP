@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Tag from '../ds/Tag';
 import Button from '../ds/Button';
 import { CAL_LINK } from '@/lib/constants';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -12,6 +13,9 @@ const fadeUp = {
 };
 
 export default function Hero() {
+  const { t } = useLanguage();
+  const h = t.hero.heading;
+
   return (
     <section className="hero-section" style={{ maxWidth: 1200, margin: '0 auto', overflow: 'hidden' }}>
       <div
@@ -27,8 +31,8 @@ export default function Hero() {
         >
           <motion.div variants={fadeUp} transition={{ duration: 0.5 }}>
             <Tag accent>
-              <span className="md:hidden">AI partner for SME</span>
-              <span className="hidden md:inline">AI partner for small and medium businesses</span>
+              <span className="md:hidden">{t.hero.tagMobile}</span>
+              <span className="hidden md:inline">{t.hero.tagDesktop}</span>
             </Tag>
           </motion.div>
 
@@ -44,9 +48,11 @@ export default function Hero() {
               maxWidth: 640,
             }}
           >
-            Hands-on{' '}
+            {h.before}
+            {h.breakBeforeUnderline && <br />}
+            {h.beforeUnderlined}
             <span style={{ position: 'relative', display: 'inline-block' }}>
-              AI training
+              {h.underlined}
               <svg
                 aria-hidden="true"
                 style={{ position: 'absolute', bottom: -6, left: '-2%', width: '104%', height: 10, overflow: 'visible', pointerEvents: 'none' }}
@@ -56,16 +62,16 @@ export default function Hero() {
                 <path d="M 1,3 C 30,8 70,8 99,3" stroke="var(--color-accent-yellow)" strokeWidth="3.2" fill="none" strokeLinecap="round" />
               </svg>
             </span>
+            {h.afterSameLine}
             <br />
             <span className="md:hidden">
-              for leadership
+              {h.line2Mobile1}
               <br />
-              and teams
+              {h.line2Mobile2}
             </span>
             <span className="hidden md:inline">
-              for leadership and
-              <br />
-              teams
+              {h.line2Desktop1}
+              {h.line2Desktop2 && <><br />{h.line2Desktop2}</>}
             </span>
           </motion.h1>
 
@@ -74,12 +80,12 @@ export default function Hero() {
             transition={{ duration: 0.5 }}
             style={{ font: 'var(--text-body-lg)', color: 'var(--color-fg-muted)', maxWidth: 520 }}
           >
-            I&apos;m Natalia. I built a company alone in six months using AI. Now I help you get that same speed — through co-building AI-native processes.
+            {t.hero.body}
           </motion.p>
 
           <motion.div variants={fadeUp} transition={{ duration: 0.5 }}>
             <Button as="a" href={CAL_LINK} variant="primary" target="_blank" rel="noopener noreferrer">
-              Book an intro
+              {t.hero.cta}
             </Button>
           </motion.div>
         </motion.div>

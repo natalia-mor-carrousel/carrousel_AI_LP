@@ -1,43 +1,12 @@
 'use client';
 
 import { motion } from 'framer-motion';
-
-const items = [
-  {
-    title: 'Graveyard of agents',
-    body: 'Most teams jump in, spin up a bunch of agents — and six months later, half of them are dead. A graveyard nobody visits. Why: bad output, something broke and nobody fixed it, or the process never should\'ve been automated in the first place.',
-  },
-  {
-    title: 'Seemingly easy, but not easy',
-    body: 'AI lowered the bar, it didn\'t remove it. There\'s still no shortcut up there — you actually have to learn this stuff.',
-  },
-  {
-    title: 'Most use cases are generic',
-    body: 'The use cases on YouTube are generic on purpose — built to fit everyone, which means they fit no one exactly. Your business and your process have their own quirks, and generic templates don\'t stretch that far.',
-  },
-  {
-    title: 'AI creates new bottlenecks',
-    body: 'Spinning up an agent takes five minutes. But most AI agents create new bottlenecks — tool sprawl, review overhead, fragmented processes, maintenance. Teams lose a full workday a week to this. The trick is making AI run smooth — like a carrousel ;)',
-  },
-  {
-    title: 'Data is messy',
-    body: 'Data is king, knowledge base is close behind. If it\'s messy, duplicated, outdated, or contradicting itself (happens more than you\'d think), your agent has nowhere solid to pull from. Garbage in, garbage out.',
-  },
-  {
-    title: 'Overusing or underusing autonomous agents',
-    body: 'Most of the time we don\'t even want to hand over the decision — in those cases, autonomous agents are a terrible idea. Build a smooth human-in-the-loop process instead. But the flip side happens too: teams double-check everything the agent does. A little trust issue. And with zero trust, you save zero time.',
-  },
-  {
-    title: 'Unclear responsibility',
-    body: 'Who owns this? Who approves a new agent? Who\'s on the hook when it messes up? Who updates it, who kills it once it\'s not needed? And if leadership never turns this into a real strategy with real resources behind it... oups.',
-  },
-  {
-    title: 'Token burn',
-    body: 'AI isn\'t free, and tokens disappear faster than you\'d think. There are ways to burn less — you just have to know them and actually use them.',
-  },
-];
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export default function Bottlenecks() {
+  const { t } = useLanguage();
+  const bf = t.bottlenecksFull;
+
   return (
     <section
       style={{
@@ -64,7 +33,7 @@ export default function Bottlenecks() {
             marginBottom: 'var(--space-3)',
           }}
         >
-          Where teams get stuck
+          {bf.eyebrow}
         </p>
         <h2
           style={{
@@ -72,7 +41,7 @@ export default function Bottlenecks() {
             letterSpacing: 'var(--letter-spacing-tight)',
           }}
         >
-          Most common bottlenecks
+          {bf.heading}
         </h2>
       </motion.div>
 
@@ -96,9 +65,9 @@ export default function Bottlenecks() {
             width: 'max-content',
           }}
         >
-          {items.map((item, i) => (
+          {bf.items.map((item, i) => (
             <motion.div
-              key={item.title}
+              key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

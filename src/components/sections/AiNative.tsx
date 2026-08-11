@@ -3,14 +3,11 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../ds/Button';
-
-const messages = {
-  yes: "If yes, you probably aren't using it enough.",
-  no: "No? Awesome! You're on the right track to an AI-native company.",
-};
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export default function AiNative() {
   const [answer, setAnswer] = useState<'yes' | 'no' | null>(null);
+  const { t } = useLanguage();
 
   return (
     <section
@@ -41,7 +38,7 @@ export default function AiNative() {
             letterSpacing: 'var(--letter-spacing-tight)',
           }}
         >
-          If you remove AI, will your business still function?
+          {t.aiNative.heading}
         </h2>
 
         <div style={{ display: 'flex', gap: 'var(--space-3)' }}>
@@ -50,14 +47,14 @@ export default function AiNative() {
             onClick={() => setAnswer('yes')}
             style={answer !== 'yes' ? { boxShadow: '4px 4px 0 #D8DBDC' } : undefined}
           >
-            Yes
+            {t.aiNative.yes}
           </Button>
           <Button
             variant={answer === 'no' ? 'primary' : 'secondary'}
             onClick={() => setAnswer('no')}
             style={answer !== 'no' ? { boxShadow: '4px 4px 0 #D8DBDC' } : undefined}
           >
-            No
+            {t.aiNative.no}
           </Button>
         </div>
 
@@ -78,7 +75,7 @@ export default function AiNative() {
                 background: 'var(--surface-card)',
               }}
             >
-              {messages[answer]}
+              {t.aiNative.messages[answer]}
             </motion.p>
           )}
         </AnimatePresence>

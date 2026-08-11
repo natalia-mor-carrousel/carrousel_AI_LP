@@ -1,21 +1,11 @@
 'use client';
 
 import { motion } from 'framer-motion';
-
-const cards = [
-  {
-    kicker: 'founders, co-founders, managers',
-    title: 'AI for Leadership',
-    body: 'AI adoption only spreads if leaders visibly use it themselves. Upgrade your AI and Claude skills and lead by example.',
-  },
-  {
-    kicker: 'marketing, sales, ops, support, HR',
-    title: 'AI for Teams',
-    body: 'The best strategy to AI transition is through distributed ownership: each team owns their own AI setup — with a shared layer where what works in one place gets passed to the others. Having one person try to own AI across the whole company "collapses." It doesn\'t scale as one job.',
-  },
-];
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export default function WhoFor() {
+  const { t } = useLanguage();
+
   return (
     <section
       style={{
@@ -38,7 +28,7 @@ export default function WhoFor() {
               marginBottom: 'var(--space-4)',
             }}
           >
-            Who this is for
+            {t.whoFor.heading}
           </h2>
           <p
             style={{
@@ -47,7 +37,7 @@ export default function WhoFor() {
               maxWidth: 560,
             }}
           >
-            Small and medium businesses that want to become AI-native.
+            {t.whoFor.subheading}
           </p>
         </motion.div>
 
@@ -55,9 +45,9 @@ export default function WhoFor() {
           style={{ display: 'grid', gap: 'var(--space-4)' }}
           className="grid grid-cols-1 md:grid-cols-2"
         >
-          {cards.map((card, i) => (
+          {t.whoFor.cards.map((card, i) => (
             <motion.div
-              key={card.title}
+              key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

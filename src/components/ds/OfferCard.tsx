@@ -9,6 +9,7 @@ interface OfferCardProps {
   ctaHref?: string;
   ctaTarget?: string;
   learnMoreHref?: string;
+  learnMoreLabel?: string;
   accent?: string;
   onCta?: () => void;
 }
@@ -22,6 +23,7 @@ export default function OfferCard({
   ctaHref,
   ctaTarget,
   learnMoreHref,
+  learnMoreLabel = 'Learn more',
   accent = 'var(--color-accent-yellow)',
   onCta,
 }: OfferCardProps) {
@@ -141,7 +143,7 @@ export default function OfferCard({
               paddingBottom: 1,
             }}
           >
-            Learn more
+            {learnMoreLabel}
           </a>
         )}
       </div>
