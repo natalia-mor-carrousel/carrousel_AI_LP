@@ -3,9 +3,25 @@ import './globals.css';
 import Providers from '@/components/Providers';
 
 export const metadata: Metadata = {
-  title: 'Carrousel.ai',
+  title: 'Carrousel.ai — AI Training for Business Teams',
   description:
-    "I'm Natalia, I built a company alone in six months using AI. Now I sit with your leadership and business teams and do the same thing inside yours.",
+    'Hands-on AI training for leadership and business teams. Carrousel.ai helps small and medium companies become AI-native.',
+  metadataBase: new URL('https://carrousel.ai'),
+  openGraph: {
+    title: 'Carrousel.ai — AI Training for Business Teams',
+    description:
+      'Hands-on AI training for leadership and business teams. Carrousel.ai helps small and medium companies become AI-native.',
+    url: 'https://carrousel.ai',
+    siteName: 'Carrousel.ai',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Carrousel.ai — AI Training for Business Teams',
+    description:
+      'Hands-on AI training for leadership and business teams. Carrousel.ai helps small and medium companies become AI-native.',
+  },
   icons: {
     icon: '/logos/favicon.svg',
   },

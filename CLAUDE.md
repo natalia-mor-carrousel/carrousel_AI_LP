@@ -8,6 +8,8 @@ This file is loaded automatically by Claude Code every session. Keep it up to da
 
 Landing page for Carrousel.ai, Natalia's AI consulting practice. Built with Next.js 14 App Router, TypeScript, Tailwind (utilities only), Framer Motion. No backend yet — static pages only.
 
+**Live URL:** https://carrousel.ai
+
 **Important:** Natalia is not a developer. She will describe what she wants visually; translate that into code without asking her to describe implementation details.
 
 ---
